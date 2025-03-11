@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Conversion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background:  rgb(119, 181, 184);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            padding-top: 80px;
+        }
+        nav {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: rgb(255, 255, 255);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 50px;
+        }
+nav div a {
+    text-decoration: none;
+    color: white; 
+    font-size: 20px;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white; 
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 15px;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover,
+nav div a:hover {
+    color: rgb(255, 136, 0); 
+}
+
+        .card {
+            background: #fff;
+            padding: 70px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 900px;
+            width: 95%;
+        }
+        .upload-box {
+            border: 2px dashed #fc8625;
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px 0;
+            cursor: pointer;
+            background: rgba(187, 118, 91, 0.1);
+            transition: 0.3s;
+        }
+        .upload-box:hover {
+            background: rgba(252, 123, 37, 0.2);
+        }
+        .upload-box input {
+            display: none;
+        }
+        .upload-box label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #3f1604;
+            cursor: pointer;
+        }
+        .remove-btn {
+            background: #2b221e;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .remove-btn:hover {
+            background: #727170;
+        }
+        .convert-btn {
+            background: #f86826;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .convert-btn:hover {
+            background: #ca5119;
+        }
+
+
+
+        .download-btn {
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+.download-btn:hover {
+    background: #32690c;
+}
+
+.alert {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+
+.alert-success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.alert-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+
+       
+     
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div>
+            <a href="{% url 'index' %}"> File Conversion Tool</a>
+        </div>
+        <div class="nav-links">
+            <a href="conversion">Conversion</a>
+            <a href="split">Split</a>
+        </div>
+    </nav>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+   
+
+</body>
+</html>

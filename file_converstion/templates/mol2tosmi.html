@@ -1,0 +1,105 @@
+
+{% extends 'main.html' %}
+
+{% block title %}Files conversion {% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Convert .mol2  into .smi </h2>
+        <form id="upload-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="upload-box" onclick="document.getElementById('file-upload').click();">
+                <input type="file" id="file-upload" name="file" required onchange="updateFileName()">
+                <label for="file-upload">Click to Upload or Drag & Drop</label>
+                <span id="file-name" style="display: block; margin-top: 10px; font-weight: bold;"></span> 
+            </div>
+            <button type="button" class="convert-btn" onclick="convertFile()">Convert</button>
+            <button type="button" class="remove-btn" onclick="removeFile()">Reset</button>
+        </form>
+
+        <a id="download-link" class="download-btn" style="display: none;" download>Download File</a>
+        {% if messages %}
+    <div id="message-container">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+    </div>
+
+<script>
+
+function convertFile() {
+    let formData = new FormData(document.getElementById("upload-form"));
+    console.log("Sending request to server...");
+
+    fetch("{% url 'mol2_to_smi' %}", {  
+        method: "POST",
+        body: formData,
+        headers: { "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Response received:", data);
+        let messageContainer = document.getElementById("message-container");
+
+        if (data.success) {
+            let downloadLink = document.getElementById("download-link");
+            downloadLink.href = data.file_url;
+            downloadLink.style.display = "block"; // Show download button
+
+            //success message
+            messageContainer.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+            messageContainer.style.display = "block";
+        } else {
+            console.error("Conversion Failed:", data.error);
+            alert("Conversion Failed: " + data.error);
+
+            //error message
+            messageContainer.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+            messageContainer.style.display = "block";
+        }
+
+        // Hide message after 5 seconds
+        setTimeout(function() {
+            messageContainer.style.display = "none";
+        }, 5000);
+
+    })
+    .catch(error => console.error("Fetch Error:", error));
+}
+
+
+
+        function updateFileName() {
+            let input = document.getElementById("file-upload");
+            let fileNameSpan = document.getElementById("file-name");
+            
+            if (input.files.length > 0) {
+                fileNameSpan.textContent = "Selected File: " + input.files[0].name;
+            } else {
+                fileNameSpan.textContent = "";
+            }
+        }
+
+    function removeFile() {
+    let input = document.getElementById("file-upload");
+    let fileNameSpan = document.getElementById("file-name");
+    let removeBtn = document.getElementById("remove-btn");
+    let downloadBtn = document.getElementById("download-link");
+
+    // Reset file input
+    input.value = "";  
+    fileNameSpan.textContent = "";  
+
+    // Hide Reset and Download buttons only if they exist
+    if (removeBtn) removeBtn.style.display = "none";
+    if (downloadBtn) downloadBtn.style.display = "none";  
+}
+
+
+    </script>
+{% endblock %}
